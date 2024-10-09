@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mã hóa và Giải mã SERA</title>
+    <link rel="stylesheet" href="Test SE.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Mã hóa và Giải mã SERA</h1>
+        <form id="encryptionForm">
+            <label for="plaintext">Nhập bản rõ:</label>
+            <textarea id="plaintext" placeholder="Nhập văn bản cần mã hóa..."></textarea>
+
+            <label for="fileInput">Chọn file:</label>
+            <input type="file" id="fileInput">
+
+            <div class="buttons">
+                <button type="button" id="encryptBtn">Mã hóa</button>
+                <button type="button" id="decryptBtn">Giải mã</button>
+            </div>
+
+            <label for="ciphertext">Bản mã:</label>
+            <textarea id="ciphertext" readonly></textarea>
+
+            <label for="decryptedText">Bản rõ:</label>
+            <textarea id="decryptedText" readonly></textarea>
+
+            <div class="options">
+                <input type="checkbox" id="saveClearText">
+                <label for="saveClearText">Lưu bản rõ</label>
+            </div>
+
+            <div class="buttons">
+                <button type="button" id="saveBtn">Lưu</button>
+                <button type="button" id="clearBtn">Xóa</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="Test SE.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="Test Affine.css">
+<title>Mã hóa và Giải mã Affine</title>
+</head>
+<body>
+
+<div class="container">
+<h1>Mã hóa và Giải mã Affine</h1>
+
+<label for="inputText">Nhập văn bản:</label>
+<textarea id="inputText" placeholder="Nhập văn bản tại đây..."></textarea>
+
+<label for="key">Nhập khóa K (0 - 25):</label>
+<input type="number" id="key" min="0" max="25" value="0">
+
+<button onclick="encrypt()">Mã hóa</button>
+<button onclick="decrypt()">Giải mã</button>
+
+<div class="result">
+<h3>Kết quả:</h3>
+<label for="encryptedText">Bản mã:</label>
+<textarea id="encryptedText" readonly></textarea>
+
+<label for="decryptedText">Bản gốc (Giải mã):</label>
+<textarea id="decryptedText" readonly></textarea>
+</div>
+</div>
+<script src="Test Affine.js"></script>
+</body>
+</html>
