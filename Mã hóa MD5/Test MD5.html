@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mã hóa và giải mã MD5 với khóa và file</title>
+    <link rel="stylesheet" href="Test MD5.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Mã hóa và giải mã MD5 với file</h1>
+        <form id="encryptionForm">
+            <!-- Nhập bản rõ -->
+            <label for="plaintext">Nhập bản rõ:</label>
+            <textarea id="plaintext" placeholder="Nhập văn bản cần mã hóa..."></textarea>
+
+            <!-- Nhập khóa hoặc tạo khóa tự động -->
+            <label for="encryptionKey">Khóa mã hóa (tự động hoặc nhập tay):</label>
+            <input type="text" id="encryptionKey" placeholder="Khóa được tạo tự động hoặc nhập tay...">
+
+            <div class="buttons">
+                <button type="button" id="generateKeyBtn">Tạo khóa tự động</button>
+                <button type="button" id="encryptBtn">Mã hóa</button>
+            </div>
+
+            <!-- Bản mã -->
+            <label for="ciphertext">Bản mã:</label>
+            <textarea id="ciphertext" readonly></textarea>
+
+            <!-- Mục chọn file để mã hóa -->
+            <label for="fileInput">Chọn file để mã hóa:</label>
+            <input type="file" id="fileInput">
+
+            <div class="buttons">
+                <button type="button" id="encryptFileBtn">Mã hóa file</button>
+            </div>
+
+            <!-- Bản mã file -->
+            <label for="fileCiphertext">Bản mã của file:</label>
+            <textarea id="fileCiphertext" readonly></textarea>
+
+            <!-- Giải mã -->
+            <label for="decryptionKey">Nhập khóa để giải mã:</label>
+            <input type="text" id="decryptionKey" placeholder="Nhập khóa giải mã...">
+
+            <div class="buttons">
+                <button type="button" id="decryptBtn">Giải mã</button>
+            </div>
+
+            <!-- Bản rõ sau giải mã -->
+            <label for="decryptedText">Bản rõ sau giải mã:</label>
+            <textarea id="decryptedText" readonly></textarea>
+
+            <!-- Lưu bản rõ -->
+            <div class="options">
+                <input type="checkbox" id="saveClearText">
+                <label for="saveClearText">Lưu bản rõ</label>
+            </div>
+
+            <div class="buttons">
+                <button type="button" id="saveBtn">Lưu bản rõ</button>
+                <button type="button" id="clearBtn">Xóa</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <script src="Test MD5.js"></script>
+</body>
+</html>

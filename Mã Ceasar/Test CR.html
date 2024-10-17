@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mã hóa và Giải mã SERA</title>
-    <link rel="stylesheet" href="Test SE.css">
+    <title>Mã hóa và Giải mã Caesar</title>
+    <link rel="stylesheet" href="Test CR.css">
 </head>
 <body>
     <div class="container">
-        <h1>Mã hóa và Giải mã SERA</h1>
+        <h1>Mã hóa và Giải mã Caesar</h1>
         <form id="encryptionForm">
             <label for="plaintext">Nhập bản rõ:</label>
             <textarea id="plaintext" placeholder="Nhập văn bản cần mã hóa..."></textarea>
@@ -16,13 +16,22 @@
             <label for="fileInput">Chọn file:</label>
             <input type="file" id="fileInput">
 
+            <label for="encryptionKey">Khóa mã hóa (số dịch):</label>
+            <input type="number" id="encryptionKey" placeholder="Nhập số dịch (0-25)" min="0" max="25">
+
             <div class="buttons">
                 <button type="button" id="encryptBtn">Mã hóa</button>
-                <button type="button" id="decryptBtn">Giải mã</button>
             </div>
 
             <label for="ciphertext">Bản mã:</label>
             <textarea id="ciphertext" readonly></textarea>
+
+            <label for="decryptionKey">Nhập khóa để giải mã:</label>
+            <input type="number" id="decryptionKey" placeholder="Nhập số dịch (0-25)" min="0" max="25">
+
+            <div class="buttons">
+                <button type="button" id="decryptBtn">Giải mã</button>
+            </div>
 
             <label for="decryptedText">Bản rõ:</label>
             <textarea id="decryptedText" readonly></textarea>
@@ -38,7 +47,6 @@
             </div>
         </form>
     </div>
-
-    <script src="Test SE.js"></script>
+    <script src="Test CR.js"></script>
 </body>
 </html>

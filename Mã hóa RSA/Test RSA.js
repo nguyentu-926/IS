@@ -1,15 +1,14 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const encryptionForm = document.getElementById('encryptionForm');
     const generateKeyBtn = document.getElementById('generateKeyBtn');
     const encryptBtn = document.getElementById('encryptBtn');
     const decryptBtn = document.getElementById('decryptBtn');
     const saveBtn = document.getElementById('saveBtn');
     const clearBtn = document.getElementById('clearBtn');
-
     let rsa = new JSEncrypt();
     let publicKey = '';
     let privateKey = '';
 
+    // Tạo khóa RSA
     generateKeyBtn.addEventListener('click', function() {
         rsa = new JSEncrypt({ default_key_size: 1024 });
         publicKey = rsa.getPublicKey();
@@ -20,14 +19,11 @@ document.addEventListener("DOMContentLoaded", function() {
         alert('Khóa RSA đã được tạo thành công!');
     });
 
+    // Mã hóa văn bản hoặc file
     encryptBtn.addEventListener('click', function() {
         const plaintext = document.getElementById('plaintext').value;
+        const fileInput = document.getElementById('fileInput').files[0];
         const customKey = document.getElementById('encryptionKey').value;
-        
-        if (!plaintext) {
-            alert('Hãy nhập văn bản cần mã hóa!');
-            return;
-        }
 
         if (customKey) {
             rsa.setPublicKey(customKey);
@@ -38,18 +34,21 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        const ciphertext = rsa.encrypt(plaintext);
-        document.getElementById('ciphertext').value = ciphertext || 'Mã hóa thất bại!';
+        if (fileInput) {
+            handleFileEncrypt(fileInput, rsa);
+        } else if (plaintext) {
+            const ciphertext = rsa.encrypt(plaintext);
+            document.getElementById('ciphertext').value = ciphertext || 'Mã hóa thất bại!';
+        } else {
+            alert('Hãy nhập văn bản hoặc chọn file để mã hóa!');
+        }
     });
 
+    // Giải mã file hoặc văn bản
     decryptBtn.addEventListener('click', function() {
         const ciphertext = document.getElementById('ciphertext').value;
         const customKey = document.getElementById('decryptionKey').value;
-
-        if (!ciphertext) {
-            alert('Không có bản mã để giải mã!');
-            return;
-        }
+        const fileInput = document.getElementById('fileInput').files[0];
 
         if (!customKey) {
             alert('Hãy nhập khóa giải mã!');
@@ -57,29 +56,63 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         rsa.setPrivateKey(customKey);
-        const decryptedText = rsa.decrypt(ciphertext);
 
-        if (decryptedText) {
-            document.getElementById('decryptedText').value = decryptedText;
+        if (fileInput) {
+            handleFileDecrypt(fileInput, rsa);
+        } else if (ciphertext) {
+            const decryptedText = rsa.decrypt(ciphertext);
+            document.getElementById('decryptedText').value = decryptedText || 'Giải mã thất bại!';
         } else {
-            document.getElementById('decryptedText').value = 'Giải mã thất bại!';
+            alert('Không có bản mã để giải mã!');
         }
     });
 
+    // Mã hóa file
+    function handleFileEncrypt(file, rsa) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const fileContent = event.target.result;
+            const encryptedContent = rsa.encrypt(fileContent);
+            const blob = new Blob([encryptedContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'encrypted_file.txt';
+            link.click();
+        };
+        reader.readAsText(file);
+    }
+
+    // Giải mã file
+    function handleFileDecrypt(file, rsa) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const fileContent = event.target.result;
+            const decryptedContent = rsa.decrypt(fileContent);
+            const blob = new Blob([decryptedContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'decrypted_file.txt';
+            link.click();
+        };
+        reader.readAsText(file);
+    }
+
+    // Lưu văn bản đã giải mã
     saveBtn.addEventListener('click', function() {
-        const plaintext = document.getElementById('plaintext').value;
-        if (!plaintext) {
+        const decryptedText = document.getElementById('decryptedText').value;
+        if (!decryptedText) {
             alert('Không có văn bản để lưu!');
             return;
         }
 
-        const blob = new Blob([plaintext], { type: 'text/plain' });
+        const blob = new Blob([decryptedText], { type: 'text/plain' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'plaintext.txt';
+        link.download = 'decrypted_text.txt';
         link.click();
     });
 
+    // Xóa nội dung
     clearBtn.addEventListener('click', function() {
         document.getElementById('plaintext').value = '';
         document.getElementById('encryptionKey').value = '';

@@ -1,34 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="Test Affine.css">
-<title>Mã hóa và Giải mã Affine</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mã hóa và Giải mã Affine</title>
+    <link rel="stylesheet" href="Test Affine.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Mã hóa và Giải mã Affine</h1>
+        <form id="encryptionForm">
+            <label for="plaintext">Nhập bản rõ:</label>
+            <textarea id="plaintext" placeholder="Nhập văn bản cần mã hóa..."></textarea>
 
-<div class="container">
-<h1>Mã hóa và Giải mã Affine</h1>
+            <label for="fileInput">Chọn file:</label>
+            <input type="file" id="fileInput">
 
-<label for="inputText">Nhập văn bản:</label>
-<textarea id="inputText" placeholder="Nhập văn bản tại đây..."></textarea>
+            <label for="encryptionKey">Khóa mã hóa (tự động tạo khóa hoặc thêm ký tự):</label>
+            <input type="text" id="encryptionKey" palceholder="Khóa sẽ được tạo tự động...">
 
-<label for="key">Nhập khóa K (0 - 25):</label>
-<input type="number" id="key" min="0" max="25" value="0">
+            <div class="buttons">
+                <button type="button" id="generateKeyBtn">Tạo khóa tự động</button>
+                <button type="button" id="encryptBtn">Mã hóa</button>
+            </div>
 
-<button onclick="encrypt()">Mã hóa</button>
-<button onclick="decrypt()">Giải mã</button>
+            <label for="ciphertext">Bản mã</label>
+            <textarea id="ciphertext" redonly></textarea>
+            <label for="decryptionKey">Nhập khóa để giải mã...</label>
+            <input type="text" id="decryptionKey" placeholder="Nhập khóa để giải mã...">
 
-<div class="result">
-<h3>Kết quả:</h3>
-<label for="encryptedText">Bản mã:</label>
-<textarea id="encryptedText" readonly></textarea>
-
-<label for="decryptedText">Bản gốc (Giải mã):</label>
-<textarea id="decryptedText" readonly></textarea>
-</div>
-</div>
-<script src="Test Affine.js"></script>
+            <div class="buttons">
+                <button type="button" id="decryptionBtn">Giải mã</button>
+            </div>
+            <label for="decryptionText">Bản rõ sau khi mã hóa:</label>
+            <textarea id="decryptionText" redonly></textarea>
+            <div class="options">
+                <input typr="checkbox" id="saveClearText">
+                <label for="saveClearText">Lưu bản rõ</label>
+            </div>
+            <div class="buttons">
+                <button type="button" id="saveBtn">Lưu</button>
+                <button type="button" id="clearBtn">Xóa</button>
+            </div>
+        </form>
+    </div>
+    <script src="Test Affine.js"></script>
 </body>
 </html>
