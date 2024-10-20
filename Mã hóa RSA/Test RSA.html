@@ -13,40 +13,38 @@
             <label for="plaintext">Nhập bản rõ:</label>
             <textarea id="plaintext" placeholder="Nhập văn bản cần mã hóa..."></textarea>
 
-            <label for="fileInput">Chọn file:</label>
-            <input type="file" id="fileInput">
+            <label for="pInput">Nhập giá trị p:</label>
+            <input type="number" id="pInput" placeholder="Nhập giá trị p" min="2">
 
-            <label for="encryptionKey">Khóa mã hóa (tự động tạo hoặc thêm ký tự):</label>
-            <input type="text" id="encryptionKey" placeholder="Khóa sẽ được tạo tự động...">
+            <label for="qInput">Nhập giá trị q:</label>
+            <input type="number" id="qInput" placeholder="Nhập giá trị q" min="2">
+
+            <label for="encryptionKey">Khóa mã hóa (e, n):</label>
+            <input type="text" id="encryptionKey" placeholder="Khóa sẽ được tạo tự động..." readonly>
 
             <div class="buttons">
-                <button type="button" id="generateKeyBtn">Tạo khóa tự động</button>
+                <button type="button" id="generateKeyBtn">Tạo khóa</button>
                 <button type="button" id="encryptBtn">Mã hóa</button>
             </div>
 
             <label for="ciphertext">Bản mã:</label>
             <textarea id="ciphertext" readonly></textarea>
 
-            <label for="decryptionKey">Nhập khóa để giải mã:</label>
+            <label for="decryptionKey">Nhập khóa giải mã (d, n):</label>
             <input type="text" id="decryptionKey" placeholder="Nhập khóa giải mã...">
 
             <div class="buttons">
                 <button type="button" id="decryptBtn">Giải mã</button>
             </div>
+
             <label for="decryptedText">Bản rõ sau khi giải mã:</label>
-            <textarea id="decryptedText" redonly></textarea>
-            <div class="options">
-                <input type="checkbox" id="saveClearText">
-                <label for="saveClearText">Lưu bản rõ</label>
-            </div>
+            <textarea id="decryptedText" readonly></textarea>
 
             <div class="buttons">
-                <button type="button" id="saveBtn">Lưu</button>
-                <button type="button" id="clearBtn">Xóa</button>
+                <button type="button" id="saveBtn">Lưu ra tệp</button>
             </div>
         </form>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
     <script src="Test RSA.js"></script>
 </body>
 </html>

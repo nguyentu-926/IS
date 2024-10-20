@@ -1,125 +1,109 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const generateKeyBtn = document.getElementById('generateKeyBtn');
-    const encryptBtn = document.getElementById('encryptBtn');
-    const decryptBtn = document.getElementById('decryptBtn');
-    const saveBtn = document.getElementById('saveBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    let rsa = new JSEncrypt();
-    let publicKey = '';
-    let privateKey = '';
+document.getElementById('generateKeyBtn').addEventListener('click', function() {
+    const p = parseInt(document.getElementById('pInput').value);
+    const q = parseInt(document.getElementById('qInput').value);
 
-    // Tạo khóa RSA
-    generateKeyBtn.addEventListener('click', function() {
-        rsa = new JSEncrypt({ default_key_size: 1024 });
-        publicKey = rsa.getPublicKey();
-        privateKey = rsa.getPrivateKey();
-
-        document.getElementById('encryptionKey').value = publicKey;
-        document.getElementById('decryptionKey').value = privateKey;
-        alert('Khóa RSA đã được tạo thành công!');
-    });
-
-    // Mã hóa văn bản hoặc file
-    encryptBtn.addEventListener('click', function() {
-        const plaintext = document.getElementById('plaintext').value;
-        const fileInput = document.getElementById('fileInput').files[0];
-        const customKey = document.getElementById('encryptionKey').value;
-
-        if (customKey) {
-            rsa.setPublicKey(customKey);
-        } else if (publicKey) {
-            rsa.setPublicKey(publicKey);
-        } else {
-            alert('Hãy tạo khóa hoặc nhập khóa mã hóa!');
-            return;
-        }
-
-        if (fileInput) {
-            handleFileEncrypt(fileInput, rsa);
-        } else if (plaintext) {
-            const ciphertext = rsa.encrypt(plaintext);
-            document.getElementById('ciphertext').value = ciphertext || 'Mã hóa thất bại!';
-        } else {
-            alert('Hãy nhập văn bản hoặc chọn file để mã hóa!');
-        }
-    });
-
-    // Giải mã file hoặc văn bản
-    decryptBtn.addEventListener('click', function() {
-        const ciphertext = document.getElementById('ciphertext').value;
-        const customKey = document.getElementById('decryptionKey').value;
-        const fileInput = document.getElementById('fileInput').files[0];
-
-        if (!customKey) {
-            alert('Hãy nhập khóa giải mã!');
-            return;
-        }
-
-        rsa.setPrivateKey(customKey);
-
-        if (fileInput) {
-            handleFileDecrypt(fileInput, rsa);
-        } else if (ciphertext) {
-            const decryptedText = rsa.decrypt(ciphertext);
-            document.getElementById('decryptedText').value = decryptedText || 'Giải mã thất bại!';
-        } else {
-            alert('Không có bản mã để giải mã!');
-        }
-    });
-
-    // Mã hóa file
-    function handleFileEncrypt(file, rsa) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const fileContent = event.target.result;
-            const encryptedContent = rsa.encrypt(fileContent);
-            const blob = new Blob([encryptedContent], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'encrypted_file.txt';
-            link.click();
-        };
-        reader.readAsText(file);
+    if (!p || !q || p <= 1 || q <= 1) {
+        alert('Vui lòng nhập các giá trị p và q là các số nguyên tố lớn hơn 1.');
+        return;
     }
 
-    // Giải mã file
-    function handleFileDecrypt(file, rsa) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const fileContent = event.target.result;
-            const decryptedContent = rsa.decrypt(fileContent);
-            const blob = new Blob([decryptedContent], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'decrypted_file.txt';
-            link.click();
-        };
-        reader.readAsText(file);
+    const n = p * q; 
+    const phi = (p - 1) * (q - 1); 
+
+    let e = 3;
+    while (gcd(e, phi) !== 1) {
+        e += 2; 
     }
 
-    // Lưu văn bản đã giải mã
-    saveBtn.addEventListener('click', function() {
-        const decryptedText = document.getElementById('decryptedText').value;
-        if (!decryptedText) {
-            alert('Không có văn bản để lưu!');
-            return;
-        }
-
-        const blob = new Blob([decryptedText], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'decrypted_text.txt';
-        link.click();
-    });
-
-    // Xóa nội dung
-    clearBtn.addEventListener('click', function() {
-        document.getElementById('plaintext').value = '';
-        document.getElementById('encryptionKey').value = '';
-        document.getElementById('ciphertext').value = '';
-        document.getElementById('decryptionKey').value = '';
-        document.getElementById('decryptedText').value = '';
-        publicKey = '';
-        privateKey = '';
-    });
+    const d = modInverse(e, phi); 
+    document.getElementById('encryptionKey').value = `e: ${e}, n: ${n}`;
+    document.getElementById('decryptionKey').value = `d: ${d}, n: ${n}`;
 });
+
+document.getElementById('encryptBtn').addEventListener('click', function() {
+    const plaintext = document.getElementById('plaintext').value.toUpperCase();
+    const publicKey = document.getElementById('encryptionKey').value;
+    const [e, n] = publicKey.match(/\d+/g).map(Number);
+
+    // Mã hóa theo RSA
+    const ciphertextArray = [];
+    for (let i = 0; i < plaintext.length; i++) {
+        const charCode = plaintext.charCodeAt(i) - 65; // Chuyển ký tự thành mã A=0
+        const encryptedChar = modPow(charCode, e, n); 
+        ciphertextArray.push(encryptedChar);
+    }
+    const ciphertext = ciphertextArray.join(' ');
+    document.getElementById('ciphertext').value = ciphertext;
+});
+
+document.getElementById('decryptBtn').addEventListener('click', function() {
+    const ciphertext = document.getElementById('ciphertext').value.trim();
+    const privateKey = document.getElementById('decryptionKey').value;
+    const [d, n] = privateKey.match(/\d+/g).map(Number);
+
+    if (!ciphertext || !privateKey) {
+        alert('Vui lòng nhập bản mã và khóa giải mã!');
+        return;
+    }
+
+    const ciphertextArray = ciphertext.split(' ').map(Number); // Chuyển đổi bản mã thành các số
+
+    // Giải mã RSA
+    const decryptedArray = ciphertextArray.map(c => {
+        const decryptedCharCode = modPow(c, d, n); 
+        return String.fromCharCode(decryptedCharCode + 65); // Chuyển ngược thành ký tự A=0,
+    });
+
+    const decryptedText = decryptedArray.join('');
+    document.getElementById('decryptedText').value = decryptedText;
+});
+
+document.getElementById('saveBtn').addEventListener('click', function() {
+    const ciphertext = document.getElementById('ciphertext').value;
+
+    if (!ciphertext) {
+        alert('Không có bản mã để lưu!');
+        return;
+    }
+
+    const blob = new Blob([ciphertext], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'rsa-encrypt.dat';
+    link.click();
+});
+
+// Hàm tính GCD (Ước số chung lớn nhất)
+function gcd(a, b) {
+    return b === 0 ? a : gcd(b, a % b);
+}
+
+// Hàm tính (a^b) % c sử dụng luỹ thừa theo modul
+function modPow(base, exp, mod) {
+    let result = 1;
+    base = base % mod;
+    while (exp > 0) {
+        if (exp % 2 == 1) result = (result * base) % mod;
+        exp = Math.floor(exp / 2);
+        base = (base * base) % mod;
+    }
+    return result;
+}
+
+// Hàm tính nghịch đảo modulo (tính khóa riêng tư d)
+function modInverse(e, phi) {
+    let m0 = phi, t, q;
+    let x0 = 0, x1 = 1;
+    if (phi === 1) return 0;
+    while (e > 1) {
+        q = Math.floor(e / phi);
+        t = phi;
+        phi = e % phi;
+        e = t;
+        t = x0;
+        x0 = x1 - q * x0;
+        x1 = t;
+    }
+    if (x1 < 0) x1 += m0;
+    return x1;
+}

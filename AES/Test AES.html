@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mã hóa và Giải mã AES</title>
+    <link rel="stylesheet" href="Test AES.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Mã hóa và Giải mã AES</h1>
+        <form id="encryptionForm">
+            <label for="plaintext">Nhập bản rõ:</label>
+            <textarea id="plaintext" placeholder="Nhập văn bản cần mã hóa..."></textarea>
+
+            <label for="fileInput">Chọn file:</label>
+            <input type="file" id="fileInput">
+
+            <label for="encryptionKey">Khóa mã hóa:</label>
+            <input type="text" id="encryptionKey" placeholder="Nhập khóa mã hóa (16, 24 hoặc 32 ký tự)">
+
+            <div class="buttons">
+                <button type="button" id="encryptBtn">Mã hóa</button>
+                <button type="button" id="generateKeyBtn">Tạo khóa tự động</button>
+            </div>
+
+            <label for="ciphertext">Bản mã:</label>
+            <textarea id="ciphertext" readonly></textarea>
+
+            <label for="decryptionKey">Nhập khóa để giải mã:</label>
+            <input type="text" id="decryptionKey" placeholder="Nhập khóa giải mã">
+
+            <div class="buttons">
+                <button type="button" id="decryptBtn">Giải mã</button>
+            </div>
+
+            <label for="decryptedText">Bản rõ:</label>
+            <textarea id="decryptedText" readonly></textarea>
+
+            <div class="options">
+                <input type="checkbox" id="saveClearText">
+                <label for="saveClearText">Lưu bản rõ</label>
+            </div>
+
+            <div class="buttons">
+                <button type="button" id="saveBtn">Lưu</button>
+                <button type="button" id="clearBtn">Xóa</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script src="Test AES.js"></script>
+</body>
+</html>
